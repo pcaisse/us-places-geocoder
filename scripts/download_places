@@ -22,11 +22,11 @@ for code in "${fips_codes[@]}"; do
 done
 download $place_url $output_dir "${place_files[@]}"
 
-county_files=("tl_2024_us_county.zip")
+county_files=("tl_$year_us_county.zip")
 county_url="https://www2.census.gov/geo/tiger/TIGER$year/COUNTY"
 download $county_url $output_dir "${county_files[@]}"
 
-state_files=("tl_2024_us_state.zip")
+state_files=("tl_$year_us_state.zip")
 state_url="https://www2.census.gov/geo/tiger/TIGER$year/STATE"
 download $state_url $output_dir "${state_files[@]}"
 
