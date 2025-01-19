@@ -10,7 +10,7 @@ function download() {
 
   for file in "${files[@]}"
   do
-    if [ "$file" == "*.zip" ]; then
+    if [[ $file == *.zip ]]; then
       tempfile=`mktemp`
       curl "$url/$file" --compressed --retry 5 --retry-all-errors -o $tempfile
       unzip -o -d $output_dir $tempfile
