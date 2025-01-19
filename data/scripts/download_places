@@ -9,9 +9,11 @@ if [ ! -d "$output_dir" ]; then
   exit 1;
 fi
 
-source ./fips_codes
-source ./alpha_codes
-source ./download_files
+dir=$(dirname "$0")
+
+source $dir/fips_codes
+source $dir/alpha_codes
+source $dir/download_files
 
 place_files=()
 place_url="https://www2.census.gov/geo/tiger/TIGER$year/PLACE"
@@ -33,5 +35,4 @@ census_designated_places_url="https://tigerweb.geo.census.gov/tigerwebmain/Files
 for code in "${alpha_codes[@]}"; do
   census_designated_place_files+=("tigerweb_bas25_cdp_${year}_acs${year: -2}_${code}.html")
 done
-
 download $census_designated_places_url $output_dir "${census_designated_place_files[@]}"
