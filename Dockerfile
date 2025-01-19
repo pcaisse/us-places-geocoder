@@ -11,4 +11,5 @@ RUN npm install -g jsdom
 # Copy over data processing files
 RUN mkdir -p /usr/src/app
 COPY scripts /usr/src/app
+COPY data /usr/src/app
 WORKDIR /usr/src/app

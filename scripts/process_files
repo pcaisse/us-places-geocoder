@@ -2,16 +2,22 @@
 set -eux
 
 year=$1
-input_dir=$2
-output_dir=$3
+fips_labels_json_file=$2
+input_dir=$3
+output_dir=$4
+
+if [ ! -f "$fips_labels_json_file" ]; then
+  echo "FIPS labels JSON file $fips_labels_json_file does not exist."
+  exit 1;
+fi
 
 if [ ! -d "$input_dir" ]; then
-  echo "$input_dir does not exist."
+  echo "Input directory $input_dir does not exist."
   exit 1;
 fi
 
 if [ ! -d "$output_dir" ]; then
-  echo "$output_dir does not exist."
+  echo "Output directory $output_dir does not exist."
   exit 1;
 fi
 
@@ -27,14 +33,14 @@ state_file="${input_dir}/tl_${year}_us_state.shp"
 state_geojson_file="${temp_dir}/state.geojson"
 ogr2ogr -f GeoJSON -t_srs crs:84 $state_geojson_file $state_file
 state_json_file="${temp_dir}/state.json"
-jq '[.features[].properties | { name: .NAME, coords: [.INTPTLAT, .INTPTLON], fp: .STATEFP, level: "state" }]' $state_geojson_file > $state_json_file
+jq '[.features[].properties | {(.NAME): [.INTPTLAT, .INTPTLON]}]' $state_geojson_file > $state_json_file
 
 # Convert county shapefile to GeoJSON
 county_file="${input_dir}/tl_${year}_us_county.shp"
 county_geojson_file="${temp_dir}/county.geojson"
 ogr2ogr -f GeoJSON -t_srs crs:84 $county_geojson_file $county_file
 county_json_file="${temp_dir}/county.json"
-jq '[.features[].properties | { name: .NAMELSAD, coords: [.INTPTLAT, .INTPTLON], fp: .STATEFP, level: "county" }]' $county_geojson_file > $county_json_file
+jq --slurpfile fips_label $fips_labels_json_file '[.features[].properties | {(.NAMELSAD + ", " + $fips_label[0][(.STATEFP)]): [.INTPTLAT, .INTPTLON]}]' $county_geojson_file > $county_json_file
 
 # Convert place shapefiles to GeoJSON
 for code in "${fips_codes[@]}"; do
@@ -42,7 +48,7 @@ for code in "${fips_codes[@]}"; do
   place_geojson_file="${temp_dir}/place-${code}.geojson"
   ogr2ogr -f GeoJSON -t_srs crs:84 $place_geojson_file $place_file
   place_json_file="${temp_dir}/place-${code}.json"
-  jq '[.features[].properties | { name: .NAME, coords: [.INTPTLAT, .INTPTLON], fp: .STATEFP, level: "place" }]' $place_geojson_file > $place_json_file
+  jq --slurpfile fips_label $fips_labels_json_file  '[.features[].properties | {(.NAME + ", " + $fips_label[0][(.STATEFP)]): [.INTPTLAT, .INTPTLON]}]' $place_geojson_file > $place_json_file
 done
 
 # TODO: Parse HTML to get CDP names and coordinates
