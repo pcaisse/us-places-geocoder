@@ -1,0 +1,51 @@
+#!/bin/bash
+set -eux
+
+year=$1
+input_dir=$2
+output_dir=$3
+
+if [ ! -d "$input_dir" ]; then
+  echo "$input_dir does not exist."
+  exit 1;
+fi
+
+if [ ! -d "$output_dir" ]; then
+  echo "$output_dir does not exist."
+  exit 1;
+fi
+
+dir=$(dirname "$0")
+
+source $dir/fips_codes
+
+# Temporary directory to store GeoJSON
+temp_dir=`mktemp -d`
+
+# Convert state shapefile to GeoJSON
+state_file="${input_dir}/tl_${year}_us_state.shp"
+state_geojson_file="${temp_dir}/state.geojson"
+ogr2ogr -f GeoJSON -t_srs crs:84 $state_geojson_file $state_file
+state_json_file="${temp_dir}/state.json"
+jq '[.features[].properties | { name: .NAME, coords: [.INTPTLAT, .INTPTLON], fp: .STATEFP, level: "state" }]' $state_geojson_file > $state_json_file
+
+# Convert county shapefile to GeoJSON
+county_file="${input_dir}/tl_${year}_us_county.shp"
+county_geojson_file="${temp_dir}/county.geojson"
+ogr2ogr -f GeoJSON -t_srs crs:84 $county_geojson_file $county_file
+county_json_file="${temp_dir}/county.json"
+jq '[.features[].properties | { name: .NAMELSAD, coords: [.INTPTLAT, .INTPTLON], fp: .STATEFP, level: "county" }]' $county_geojson_file > $county_json_file
+
+# Convert place shapefiles to GeoJSON
+for code in "${fips_codes[@]}"; do
+  place_file="${input_dir}/tl_${year}_${code}_place.shp"
+  place_geojson_file="${temp_dir}/place-${code}.geojson"
+  ogr2ogr -f GeoJSON -t_srs crs:84 $place_geojson_file $place_file
+  place_json_file="${temp_dir}/place-${code}.json"
+  jq '[.features[].properties | { name: .NAME, coords: [.INTPTLAT, .INTPTLON], fp: .STATEFP, level: "place" }]' $place_geojson_file > $place_json_file
+done
+
+# TODO: Parse HTML to get CDP names and coordinates
+
+# Combine all JSON files into one
+jq -s 'add' $temp_dir/*.json > $output_dir/places.json
