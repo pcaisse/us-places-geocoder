@@ -38,7 +38,7 @@ If you are only concerned with places in the U.S. and don't need lookup at the a
 
 - Docker
 
-### Building Locally
+### Building Places JSON Locally
 
 First make sure Docker is installed.
 
@@ -52,8 +52,5 @@ docker build -t static-geocoder .
 docker run --volume=$HOME/Downloads/static-geocoder/2024/data-files:/tmp/data-files static-geocoder bash -c "./download_places 2024 /tmp/data-files"
 
 # Process all files into JSON
-docker run --volume=$HOME/Downloads/static-geocoder/2024/data-files:/tmp/data-files --volume=$HOME/Downloads/static-geocoder/2024/places-json:/tmp/places-json static-geocoder bash -c "./process_files 2024 /usr/src/app/fips_code_labels.json /tmp/data-files /tmp/places-json"
-
-# Build geocoder from places JSON
-docker run --volume=$HOME/Downloads/static-geocoder/2024/places-json:/tmp/places-json --volume=$HOME/Downloads/static-geocoder/2024/geocoder:/tmp/geocoder static-geocoder node build_geocoder.js /tmp/places-json /tmp/geocoder"
+docker run --volume=$HOME/Downloads/static-geocoder/2024/data-files:/tmp/data-files --volume=$(pwd)/static:/tmp/places-json static-geocoder bash -c "./process_files 2024 /usr/src/app/fips_code_labels.json /tmp/data-files /tmp/places-json"
 ```

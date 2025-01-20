@@ -1,0 +1,15 @@
+{
+  "name": "us-places-geocoder",
+  "version": "0.1.0",
+  "description": "Static geocoder that returns coordinates (lat/long) for places in the United States",
+  "type": "module",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "author": "Peter Caisse",
+  "license": "MIT"
+}
