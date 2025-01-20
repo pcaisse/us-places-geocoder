@@ -28,30 +28,31 @@ source $dir/fips_codes
 # Temporary directory to store GeoJSON
 temp_dir=`mktemp -d`
 
-# Convert state shapefile to GeoJSON
+# Convert state shapefile to JSON
 state_file="${input_dir}/tl_${year}_us_state.shp"
 state_geojson_file="${temp_dir}/state.geojson"
 ogr2ogr -f GeoJSON -t_srs crs:84 $state_geojson_file $state_file
 state_json_file="${temp_dir}/state.json"
-jq '[.features[].properties | {(.NAME): [.INTPTLAT, .INTPTLON]}]' $state_geojson_file > $state_json_file
+jq '[.features[].properties | [(.NAME), [.INTPTLAT, .INTPTLON]]]' $state_geojson_file > $state_json_file
 
-# Convert county shapefile to GeoJSON
+# Convert county shapefile to JSON
 county_file="${input_dir}/tl_${year}_us_county.shp"
 county_geojson_file="${temp_dir}/county.geojson"
 ogr2ogr -f GeoJSON -t_srs crs:84 $county_geojson_file $county_file
 county_json_file="${temp_dir}/county.json"
-jq --slurpfile fips_label $fips_labels_json_file '[.features[].properties | {(.NAMELSAD + ", " + $fips_label[0][(.STATEFP)]): [.INTPTLAT, .INTPTLON]}]' $county_geojson_file > $county_json_file
+jq --slurpfile fips_label $fips_labels_json_file '[.features[].properties | [(.NAMELSAD + ", " + $fips_label[0][(.STATEFP)]), [.INTPTLAT, .INTPTLON]]]' $county_geojson_file > $county_json_file
 
-# Convert place shapefiles to GeoJSON
+# Convert place shapefiles to JSON
 for code in "${fips_codes[@]}"; do
   place_file="${input_dir}/tl_${year}_${code}_place.shp"
   place_geojson_file="${temp_dir}/place-${code}.geojson"
   ogr2ogr -f GeoJSON -t_srs crs:84 $place_geojson_file $place_file
   place_json_file="${temp_dir}/place-${code}.json"
-  jq --slurpfile fips_label $fips_labels_json_file  '[.features[].properties | {(.NAME + ", " + $fips_label[0][(.STATEFP)]): [.INTPTLAT, .INTPTLON]}]' $place_geojson_file > $place_json_file
+  jq --slurpfile fips_label $fips_labels_json_file  '[.features[].properties | [(.NAME + ", " + $fips_label[0][(.STATEFP)]), [.INTPTLAT, .INTPTLON]]]' $place_geojson_file > $place_json_file
 done
 
 # TODO: Parse HTML to get CDP names and coordinates
 
-# Combine all JSON files into one
-jq -s 'add' $temp_dir/*.json > $output_dir/places.json
+# Now that all features have been converted to arrays of [<place_name>, [<lat>, <lng>]] tuples,
+# combine all JSON files into one, removing leading plus signs and leading zeroes from coordinates
+jq -s 'add | [.[] | .[1].[] |= sub("^(?<plus_or_minus>[+-])[0]"; "\(.plus_or_minus)") | .[1].[] |= sub("^[+]"; "")]' $temp_dir/*.json > $output_dir/places.json
