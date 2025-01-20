@@ -37,6 +37,7 @@ If you are only concerned with places in the U.S. and don't need lookup at the a
 ### Requirements
 
 - Docker
+- Node v22.13+
 
 ### Building Places JSON Locally
 

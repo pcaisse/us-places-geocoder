@@ -11,5 +11,8 @@
     "test": "node --test"
   },
   "author": "Peter Caisse",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  }
 }
