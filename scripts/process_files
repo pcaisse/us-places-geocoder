@@ -55,4 +55,4 @@ done
 
 # Now that all features have been converted to arrays of [<place_name>, [<lat>, <lng>]] tuples,
 # combine all JSON files into one, removing leading plus signs and leading zeroes from coordinates
-jq -s 'add | [.[] | .[1].[] |= sub("^(?<plus_or_minus>[+-])[0]"; "\(.plus_or_minus)") | .[1].[] |= sub("^[+]"; "")]' $temp_dir/*.json > $output_dir/places.json
+jq -c -s 'add | [.[] | .[1].[] |= sub("^(?<plus_or_minus>[+-])[0]"; "\(.plus_or_minus)") | .[1].[] |= sub("^[+]"; "")]' $temp_dir/*.json > $output_dir/places.json
