@@ -15,16 +15,16 @@ source $dir/fips_codes
 source $dir/download_files
 
 place_files=()
-place_url="https://www2.census.gov/geo/tiger/TIGER$year/PLACE"
+place_url="https://www2.census.gov/geo/tiger/TIGER${year}/PLACE"
 for code in "${fips_codes[@]}"; do
   place_files+=("tl_${year}_${code}_place.zip")
 done
 download $place_url $output_dir "${place_files[@]}"
 
-county_files=("tl_$year_us_county.zip")
-county_url="https://www2.census.gov/geo/tiger/TIGER$year/COUNTY"
+county_files=("tl_${year}_us_county.zip")
+county_url="https://www2.census.gov/geo/tiger/TIGER${year}/COUNTY"
 download $county_url $output_dir "${county_files[@]}"
 
-state_files=("tl_$year_us_state.zip")
-state_url="https://www2.census.gov/geo/tiger/TIGER$year/STATE"
+state_files=("tl_${year}_us_state.zip")
+state_url="https://www2.census.gov/geo/tiger/TIGER${year}/STATE"
 download $state_url $output_dir "${state_files[@]}"
