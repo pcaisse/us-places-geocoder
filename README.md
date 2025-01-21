@@ -2,6 +2,9 @@
 
 Static geocoder that returns coordinates (lat/long) for places in the United States.
 
+All data is provided by the U.S. Census (see [TIGER/Line
+Shapefiles](https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html)).
+
 Includes:
 - All 50 states
 - District of Columbia
@@ -26,11 +29,11 @@ Typically, geocoding is provided as a service via an API that you pay for and in
 API key.
 
 But sometimes you don't want to rely on another another service that you need to integrate with and
-then maintain that integration and which may, some time in the future, cease to exist. You may also
-want offline support. Plus, place names don't change very often and megabytes aren't as big as they
-used to be.
+then maintain that integration, a service which may, at some point in the future, cease to exist.
+You may also want offline support. Plus, place names don't change very often and a megabyte isn't as
+big as it used to be.
 
-If you are only concerned with places in the U.S. and don't need lookup at the address level, this geocoder could work well for you (and is very very fast compared to a network call!).
+If you are only concerned with places in the U.S. and don't need lookup at the address level, this geocoder could work well for you (and is very, very fast compared to a network call!).
 
 ## Development
 
