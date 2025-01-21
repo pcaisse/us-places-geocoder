@@ -9,4 +9,8 @@ describe("Geocoder", () => {
     console.debug("results", results);
     assert.equal(results.length, 7);
   });
+  it("returns no results for string that does not match", () => {
+    const results = searchByPlaceName("s;ldkfj");
+    assert.equal(results.length, 0);
+  });
 });
