@@ -1,4 +1,0 @@
-#!/bin/bash
-set -eux
-
-declare -a alpha_codes=("al" "il" "mt" "ri" "as" "ak" "in" "ne" "sc" "gu" "az" "ia" "nv" "sd" "mp" "ar" "ks" "nh" "tn" "pr" "ca" "ky" "nj" "tx" "vi" "co" "la" "nm" "ut" "ct" "me" "ny" "vt" "de" "md" "nc" "va" "dc" "ma" "nd" "wa" "fl" "mi" "oh" "wv" "ga" "mn" "ok" "wi" "hi" "ms" "or" "wy" "id" "mo" "pa")

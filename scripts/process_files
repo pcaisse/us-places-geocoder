@@ -51,8 +51,6 @@ for code in "${fips_codes[@]}"; do
   jq --slurpfile fips_label $fips_labels_json_file  '[.features[].properties | [(.NAME + ", " + $fips_label[0][(.STATEFP)]), [.INTPTLAT, .INTPTLON]]]' $place_geojson_file > $place_json_file
 done
 
-# TODO: Parse HTML to get CDP names and coordinates
-
-# Now that all features have been converted to arrays of [<place_name>, [<lat>, <lng>]] tuples,
-# combine all JSON files into one, removing leading plus signs and leading zeroes from coordinates
-jq -c -s 'add | [.[] | .[1].[] |= sub("^(?<plus_or_minus>[+-])[0]"; "\(.plus_or_minus)") | .[1].[] |= sub("^[+]"; "")]' $temp_dir/*.json > $output_dir/places.json
+# Now that all features have been converted to tuples of [<place_name>, [<lat>, <lng>]]
+# combine all JSON files into one and cast coordinates to numbers
+jq -c -s 'add | [.[] | .[1].[] |= tonumber]' $temp_dir/*.json > $output_dir/places.json
