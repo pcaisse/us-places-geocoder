@@ -6,8 +6,14 @@ const { searchByPlaceName } = require("../lib/index.js");
 describe("Geocoder", () => {
   it("returns all matching results", () => {
     const results = searchByPlaceName("Philadelphia");
-    console.debug("results", results);
+    // console.debug("results", results);
     assert.equal(results.length, 7);
+  });
+  it("works for partial prefix matching", () => {
+    assert.deepEqual(
+      searchByPlaceName("Philadelphia"),
+      searchByPlaceName("Philadelphi")
+    );
   });
   it("returns no results for string that does not match", () => {
     const results = searchByPlaceName("s;ldkfj");

@@ -58,3 +58,10 @@ docker run --volume=$(pwd)/scripts:/usr/src/app --volume=$HOME/Downloads/static-
 # Process all files into JSON
 docker run --volume=$(pwd)/scripts:/usr/src/app --volume=$HOME/Downloads/static-geocoder/2024/data-files:/tmp/data-files --volume=$(pwd)/static:/tmp/places-json static-geocoder bash -c "./process_files 2024 /usr/src/app/data/fips_code_labels.json /tmp/data-files /tmp/places-json"
 ```
+
+## Acknowledgements
+
+Thanks to [ComputerBread](https://www.youtube.com/@ComputerBread) for these videos describing the
+trie and radix trie implementations:
+- [Trie - The data structure behind autocomplete (Prefix tree)](https://www.youtube.com/watch?v=Prnpv7eAAXQ)
+- [Compressed trie](https://www.youtube.com/watch?v=qakGXuOW1S8)
