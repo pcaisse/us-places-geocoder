@@ -13,5 +13,6 @@
   "license": "MIT",
   "engines": {
     "node": ">=18"
-  }
+  },
+  "repository.url": "https://github.com/pcaisse/us-places-geocoder"
 }
