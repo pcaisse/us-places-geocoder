@@ -2,6 +2,29 @@
 
 Static geocoder that returns coordinates (lat/long) for places in the United States.
 
+This package exposes only one function called `searchByPlaceName`, which takes a place name (or place
+name prefix) and returns a list of matching place names and their coordinates.
+
+For example, here are the search results for "Philadelphia":
+
+```node
+> searchByPlaceName("Philadelphia")
+[
+  [ 'Philadelphia, TN', [ 35.6790503, -84.3999137 ] ],
+  [ 'Philadelphia, PA', [ 40.0093755, -75.1333459 ] ],
+  [ 'Philadelphia, NY', [ 44.1539885, -75.7097899 ] ],
+  [ 'Philadelphia, MO', [ 39.8350512, -91.741179 ] ],
+  [ 'Philadelphia, MS', [ 32.7751057, -89.1220453 ] ],
+  [ 'Philadelphia, IN', [ 39.782295, -85.8440385 ] ],
+  [ 'Philadelphia County, PA', [ 40.0093755, -75.1333459 ] ]
+]
+```
+
+You can also searching by prefix and the search string is case-insensitive (searching for
+"Philadelphia", "Phila", and "phila" will return the same results in this case).
+
+## About
+
 All data is provided by the U.S. Census (see [TIGER/Line
 Shapefiles](https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html)).
 
