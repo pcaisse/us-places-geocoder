@@ -20,7 +20,7 @@ For example, here are the search results for "Philadelphia":
 ]
 ```
 
-You can also searching by prefix and the search string is case-insensitive (searching for
+You can also search by prefix and the search string is case-insensitive (searching for
 "Philadelphia", "Phila", and "phila" will return the same results in this case).
 
 ## About
