@@ -15,6 +15,12 @@ describe("Geocoder", () => {
       searchByPlaceName("Philadelphi")
     );
   });
+  it("search is case insensitive", () => {
+    assert.deepEqual(
+      searchByPlaceName("Philadelphia"),
+      searchByPlaceName("philaDELphia")
+    );
+  });
   it("returns no results for string that does not match", () => {
     const results = searchByPlaceName("s;ldkfj");
     assert.equal(results.length, 0);
