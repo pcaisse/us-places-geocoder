@@ -2,26 +2,65 @@
 
 Static geocoder that returns coordinates (lat/long) for places in the United States.
 
+## Usage
+
 This package exposes only one function called `searchByPlaceName`, which takes a place name (or place
-name prefix) and returns a list of matching place names and their coordinates.
+name prefix) and returns a list of matching place names and their coordinates sorted by population
+by default.
 
 For example, here are the search results for "Philadelphia":
 
 ```node
 > searchByPlaceName("Philadelphia")
 [
-  [ 'Philadelphia, PA', [ 40.0093755, -75.1333459 ] ],
-  [ 'Philadelphia County, PA', [ 40.0093755, -75.1333459 ] ],
-  [ 'Philadelphia, MS', [ 32.7751057, -89.1220453 ] ],
-  [ 'Philadelphia, NY', [ 44.1539885, -75.7097899 ] ],
-  [ 'Philadelphia, TN', [ 35.6790503, -84.3999137 ] ],
-  [ 'Philadelphia, MO', [ 39.8350512, -91.741179 ] ],
-  [ 'Philadelphia, IN', [ 39.782295, -85.8440385 ] ]
+  {
+    populationRank: 58,
+    name: 'Philadelphia, PA',
+    coordinates: [ 40.0093755, -75.1333459 ],
+    geolevel: 'city'
+  },
+  {
+    populationRank: 59,
+    name: 'Philadelphia County, PA',
+    coordinates: [ 40.0093755, -75.1333459 ],
+    geolevel: 'county'
+  },
+  {
+    populationRank: 6024,
+    name: 'Philadelphia, MS',
+    coordinates: [ 32.7751057, -89.1220453 ],
+    geolevel: 'city'
+  },
+  {
+    populationRank: 12642,
+    name: 'Philadelphia, NY',
+    coordinates: [ 44.1539885, -75.7097899 ],
+    geolevel: 'city'
+  },
+  {
+    populationRank: 14471,
+    name: 'Philadelphia, TN',
+    coordinates: [ 35.6790503, -84.3999137 ],
+    geolevel: 'city'
+  },
+  {
+    populationRank: 30289,
+    name: 'Philadelphia, MO',
+    coordinates: [ 39.8350512, -91.741179 ],
+    geolevel: 'city'
+  },
+  {
+    populationRank: 32165,
+    name: 'Philadelphia, IN',
+    coordinates: [ 39.782295, -85.8440385 ],
+    geolevel: 'city'
+  }
 ]
+
 ```
 
-You can also search by prefix and the search string is case-insensitive (searching for
-"Philadelphia", "Phila", and "phila" will return the same results in this case).
+You can also search by case-insensitive prefix (searching for "Philadelphia", "Phila", and "phila"
+will return the same results in this case).
 
 ## About
 
