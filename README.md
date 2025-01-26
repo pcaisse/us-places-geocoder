@@ -4,14 +4,14 @@ Static geocoder that returns coordinates (lat/long) for places in the United Sta
 
 ## Usage
 
-This package exposes only one function called `searchByPlaceName`, which takes a place name (or place
-name prefix) and returns a list of matching place names and their coordinates sorted by population
-by default.
+This package exposes only one function called `searchByPlaceName`, which takes a case-insensitive
+place name (or place name prefix) and returns a list of matching place names and their coordinates
+sorted by population by default.
 
-For example, here are the search results for "Philadelphia":
+For example, here are the search results for "phila":
 
 ```node
-> searchByPlaceName("Philadelphia")
+> searchByPlaceName("phila")
 [
   {
     populationRank: 58,
@@ -58,9 +58,6 @@ For example, here are the search results for "Philadelphia":
 ]
 
 ```
-
-You can also search by case-insensitive prefix (searching for "Philadelphia", "Phila", and "phila"
-will return the same results in this case).
 
 ## About
 
