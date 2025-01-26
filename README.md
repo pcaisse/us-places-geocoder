@@ -4,7 +4,7 @@ Static geocoder that returns coordinates (lat/long) for places in the United Sta
 
 ## Usage
 
-This package exposes only one function called `searchByPlaceName`, which takes a case-insensitive
+This package exposes only one function called `searchByPlaceName` which takes a case-insensitive
 place name (or place name prefix) and returns a list of matching place names and their coordinates
 sorted by population by default.
 
@@ -88,7 +88,7 @@ Typically, geocoding is provided as a service via an API that you pay for and in
 API key.
 
 But sometimes you don't want to rely on another another service that you need to integrate with and
-then maintain that integration, a service which may, at some point in the future, cease to exist.
+then maintain that integration; a service which may, at some point in the future, cease to exist.
 You may also want offline support. Plus, place names don't change very often and a megabyte isn't as
 big as it used to be.
 
