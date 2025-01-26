@@ -75,14 +75,17 @@ Then run:
 # Build container
 docker build -t static-geocoder .
 
-# Download and process 2023 population data
-docker run --volume=$(pwd)/scripts:/usr/src/app --volume=$HOME/Downloads/static-geocoder/2024/data-files:/tmp/data-files static-geocoder bash -c "./download_and_process_population_data 2020 2023 /tmp/data-files"
+# Download 2020 population data
+docker run --volume=$(pwd)/scripts:/usr/src/app --volume=$HOME/Downloads/static-geocoder/2024/data-files:/tmp/data-files static-geocoder bash -c "./download_population_data 2010 2020 /tmp/data-files"
+
+# Process 2020 population data
+docker run --volume=$(pwd)/scripts:/usr/src/app --volume=$HOME/Downloads/static-geocoder/2024/data-files:/tmp/data-files --volume=$HOME/Downloads/static-geocoder/2024/population-files:/tmp/population-files static-geocoder bash -c "./process_population_files 2020 /tmp/data-files /tmp/population-files"
 
 # Download 2024 places data
 docker run --volume=$(pwd)/scripts:/usr/src/app --volume=$HOME/Downloads/static-geocoder/2024/data-files:/tmp/data-files static-geocoder bash -c "./download_places 2024 /tmp/data-files"
 
 # Process all files into JSON
-docker run --volume=$(pwd)/scripts:/usr/src/app --volume=$HOME/Downloads/static-geocoder/2024/data-files:/tmp/data-files --volume=$(pwd)/static:/tmp/places-json static-geocoder bash -c "./process_files 2024 /usr/src/app/data/fips_code_labels.json /tmp/data-files /tmp/places-json"
+docker run --volume=$(pwd)/scripts:/usr/src/app --volume=$HOME/Downloads/static-geocoder/2024/data-files:/tmp/data-files --volume=$HOME/Downloads/static-geocoder/2024/population-files:/tmp/population-files --volume=$(pwd)/static:/tmp/places-json static-geocoder bash -c "./process_files 2024 /usr/src/app/data/fips_code_labels.json /tmp/data-files /tmp/population-files /tmp/places-json"
 ```
 
 ## Acknowledgements

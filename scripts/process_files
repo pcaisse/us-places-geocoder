@@ -3,16 +3,22 @@ set -eux
 
 year=$1
 fips_labels_json_file=$2
-input_dir=$3
-output_dir=$4
+input_shapefiles_data_dir=$3
+input_population_data_dir=$4
+output_dir=$5
 
 if [ ! -f "$fips_labels_json_file" ]; then
   echo "FIPS labels JSON file $fips_labels_json_file does not exist."
   exit 1;
 fi
 
-if [ ! -d "$input_dir" ]; then
-  echo "Input directory $input_dir does not exist."
+if [ ! -d "$input_shapefiles_data_dir" ]; then
+  echo "Input directory for shapefile data $input_shapefiles_data_dir does not exist."
+  exit 1;
+fi
+
+if [ ! -d "$input_population_data_dir" ]; then
+  echo "Input directory for population data $input_population_data_dir does not exist."
   exit 1;
 fi
 
@@ -28,17 +34,17 @@ source $dir/fips_codes
 # Temporary directory to store GeoJSON
 temp_dir=`mktemp -d`
 
-place_populations_file="${input_dir}/place_populations.json"
+place_populations_file="${input_population_data_dir}/place_populations.json"
 
 # Convert state shapefile to JSON
-state_file="${input_dir}/tl_${year}_us_state.shp"
+state_file="${input_shapefiles_data_dir}/tl_${year}_us_state.shp"
 state_geojson_file="${temp_dir}/state.geojson"
 ogr2ogr -f GeoJSON -t_srs crs:84 $state_geojson_file $state_file
 state_json_file="${temp_dir}/state.json"
 jq --slurpfile geoid_to_population $place_populations_file '[.features[].properties | [(.NAME), [.INTPTLAT, .INTPTLON], $geoid_to_population[0][(.GEOID)]]]' $state_geojson_file > $state_json_file
 
 # Convert county shapefile to JSON
-county_file="${input_dir}/tl_${year}_us_county.shp"
+county_file="${input_shapefiles_data_dir}/tl_${year}_us_county.shp"
 county_geojson_file="${temp_dir}/county.geojson"
 ogr2ogr -f GeoJSON -t_srs crs:84 $county_geojson_file $county_file
 county_json_file="${temp_dir}/county.json"
@@ -46,7 +52,7 @@ jq --slurpfile fips_label $fips_labels_json_file --slurpfile geoid_to_population
 
 # Convert place shapefiles to JSON
 for code in "${fips_codes[@]}"; do
-  place_file="${input_dir}/tl_${year}_${code}_place.shp"
+  place_file="${input_shapefiles_data_dir}/tl_${year}_${code}_place.shp"
   place_geojson_file="${temp_dir}/place-${code}.geojson"
   ogr2ogr -f GeoJSON -t_srs crs:84 $place_geojson_file $place_file
   place_json_file="${temp_dir}/place-${code}.json"

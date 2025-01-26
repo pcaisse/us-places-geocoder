@@ -1,0 +1,52 @@
+#!/bin/bash
+set -eux
+
+year=$1
+input_dir=$2
+output_dir=$3
+
+if [ ! -d "$input_dir" ]; then
+  echo "Input directory $input_dir does not exist."
+  exit 1;
+fi
+
+if [ ! -d "$output_dir" ]; then
+  echo "$output_dir does not exist."
+  exit 1;
+fi
+
+state_population_data_file="$input_dir/state_pop.csv"
+municipios_population_data_file="$input_dir/municipios_pop.csv"
+
+# Temporary directory to store intermediate JSON
+temp_dir=`mktemp -d`
+
+# Filter CSV down to relevant columns
+awk -F"," "
+NR==1 {
+    for (i=1; i<=NF; i++) {
+        f[\$i] = i
+    }
+}
+{print \$(f[\"STATE\"])(\$(f[\"COUNTY\"]) == \"000\" ? \"\" : \$(f[\"COUNTY\"]))(\$(f[\"PLACE\"]) == \"00000\" ? \"\" : \$(f[\"PLACE\"]))\",\"\$(f[\"POPESTIMATE$year\"]) }
+" $state_population_data_file |
+  # Convert CSV to JSON
+  csvtojson --ignoreEmpty=true --colParser="{\"POPESTIMATE$year\":\"number\"}" |
+    # Transform into object of geoid -> population estimate
+    jq "map({key: .STATECOUNTYPLACE, value: .POPESTIMATE$year}) | from_entries" > "$temp_dir/state_pop.json"
+
+# Filter CSV down to relevant columns
+awk -F"," "
+NR==1 {
+    for (i=1; i<=NF; i++) {
+        f[\$i] = i
+    }
+}
+{print \$(f[\"STATE\"])(\$(f[\"COUNTY\"]) == \"000\" ? \"\" : \$(f[\"COUNTY\"]))\",\"\$(f[\"POPESTIMATE$year\"]) }
+" $municipios_population_data_file |
+  # Convert CSV to JSON
+  csvtojson --ignoreEmpty=true --colParser="{\"POPESTIMATE$year\":\"number\"}" |
+    # Transform into object of geoid -> population estimate
+    jq "map({key: .STATECOUNTY, value: .POPESTIMATE$year}) | from_entries" > "$temp_dir/municipios_pop.json"
+
+jq -s 'add' $temp_dir/*.json > $output_dir/place_populations.json

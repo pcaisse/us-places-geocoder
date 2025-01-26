@@ -1,0 +1,17 @@
+#!/bin/bash
+set -eux
+
+start_year=$1
+end_year=$2
+output_dir=$3
+
+if [ ! -d "$output_dir" ]; then
+  echo "$output_dir does not exist."
+  exit 1;
+fi
+
+state_population_data_file_url="https://www2.census.gov/programs-surveys/popest/datasets/${start_year}-${end_year}/cities/SUB-EST${end_year}_ALL.csv"
+municipios_population_data_file_url="https://www2.census.gov/programs-surveys/popest/datasets/${start_year}-${end_year}/municipios/totals/PRM-EST${end_year}.csv"
+
+curl $state_population_data_file_url --compressed --retry 5 --retry-all-errors -o "$output_dir/state_pop.csv"
+curl $municipios_population_data_file_url --compressed --retry 5 --retry-all-errors -o "$output_dir/municipios_pop.csv"
