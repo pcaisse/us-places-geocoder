@@ -24,7 +24,7 @@ describe("Geocoder", () => {
   it("results are sorted by population", () => {
     const results = searchByPlaceName("Philadelphia");
     // console.debug("results", results);
-    assert.equal(results[0][0], "Philadelphia, PA");
+    assert.equal(results[0].name, "Philadelphia, PA");
   });
   it("returns no results for string that does not match", () => {
     const results = searchByPlaceName("s;ldkfj");

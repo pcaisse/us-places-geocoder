@@ -10,13 +10,13 @@ For example, here are the search results for "Philadelphia":
 ```node
 > searchByPlaceName("Philadelphia")
 [
-  [ 'Philadelphia, TN', [ 35.6790503, -84.3999137 ] ],
   [ 'Philadelphia, PA', [ 40.0093755, -75.1333459 ] ],
-  [ 'Philadelphia, NY', [ 44.1539885, -75.7097899 ] ],
-  [ 'Philadelphia, MO', [ 39.8350512, -91.741179 ] ],
+  [ 'Philadelphia County, PA', [ 40.0093755, -75.1333459 ] ],
   [ 'Philadelphia, MS', [ 32.7751057, -89.1220453 ] ],
-  [ 'Philadelphia, IN', [ 39.782295, -85.8440385 ] ],
-  [ 'Philadelphia County, PA', [ 40.0093755, -75.1333459 ] ]
+  [ 'Philadelphia, NY', [ 44.1539885, -75.7097899 ] ],
+  [ 'Philadelphia, TN', [ 35.6790503, -84.3999137 ] ],
+  [ 'Philadelphia, MO', [ 39.8350512, -91.741179 ] ],
+  [ 'Philadelphia, IN', [ 39.782295, -85.8440385 ] ]
 ]
 ```
 
