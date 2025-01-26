@@ -30,4 +30,21 @@ describe("Geocoder", () => {
     const results = searchByPlaceName("s;ldkfj");
     assert.equal(results.length, 0);
   });
+  it("cities have correct geolevel", () => {
+    const results = searchByPlaceName("philadelphia, pa");
+    assert.equal(results[0].geolevel, "city");
+  });
+  it("counties have correct geolevel", () => {
+    const results = searchByPlaceName("philadelphia county");
+    assert.equal(results[0].geolevel, "county");
+  });
+  it("states have correct geolevel", () => {
+    const results = searchByPlaceName("pennsylvania");
+    assert.equal(results[0].geolevel, "state");
+  });
+  it("Puerto Rican municipios have the correct geolevel", () => {
+    const results = searchByPlaceName("san juan municipio");
+    // console.debug("results", results);
+    assert.equal(results[0].geolevel, "county");
+  });
 });
