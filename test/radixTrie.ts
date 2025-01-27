@@ -1,8 +1,8 @@
-const assert = require("node:assert/strict");
-const { describe, it } = require("node:test");
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 
-const RadixTrie = require("../lib/radixTrie.js");
-const { countNumberOfNodesWithId } = require("../lib/utils.js");
+import RadixTrie from "../lib/radixTrie";
+import { countNumberOfNodesWithId } from "../lib/utils";
 
 describe("RadixTrie", () => {
   it("inserts single node", () => {

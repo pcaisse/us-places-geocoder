@@ -1,5 +1,9 @@
-class Node {
-  constructor(prefix) {
+class TrieNode {
+  prefix: string;
+  children: Record<string, TrieNode>;
+  id: number | null;
+
+  constructor(prefix: string) {
     this.prefix = prefix;
     this.children = {};
     this.id = null;
@@ -7,11 +11,12 @@ class Node {
 }
 
 class RadixTrie {
+  root: TrieNode;
   constructor() {
-    this.root = new Node();
+    this.root = new TrieNode("");
   }
 
-  commonPrefixLength(a, b) {
+  commonPrefixLength(a: string, b: string) {
     let len = 0;
     while (len < a.length && len < b.length && a[len] === b[len]) {
       len++;
@@ -19,7 +24,7 @@ class RadixTrie {
     return len;
   }
 
-  insert(str, id) {
+  insert(str: string, id: number) {
     const strLower = str.toLowerCase();
     let node = this.root;
     let i = 0;
@@ -29,7 +34,7 @@ class RadixTrie {
       const childExists = key in node.children;
       if (!childExists) {
         // Add new string and short-circuit
-        const newNode = new Node(strLower.slice(i));
+        const newNode = new TrieNode(strLower.slice(i));
         newNode.id = id;
         node.children[key] = newNode;
         break;
@@ -45,7 +50,7 @@ class RadixTrie {
 
       if (prefixLen < node.prefix.length) {
         // Split existing node due to common prefix
-        const newChild = new Node(node.prefix.slice(prefixLen));
+        const newChild = new TrieNode(node.prefix.slice(prefixLen));
         newChild.children = node.children;
         newChild.id = node.id;
         node.prefix = node.prefix.slice(0, prefixLen);
@@ -55,7 +60,7 @@ class RadixTrie {
     }
   }
 
-  search(str) {
+  search(str: string) {
     const ids = [];
 
     let strLower = str.toLowerCase();
@@ -89,11 +94,13 @@ class RadixTrie {
     const nodes = [node];
     while (nodes.length > 0) {
       const node = nodes.pop();
-      if (node.id !== null) {
-        ids.push(node.id);
-      }
-      for (const char in node.children) {
-        nodes.push(node.children[char]);
+      if (node) {
+        if (node.id !== null) {
+          ids.push(node.id);
+        }
+        for (const char in node.children) {
+          nodes.push(node.children[char]);
+        }
       }
     }
 
@@ -101,4 +108,4 @@ class RadixTrie {
   }
 }
 
-module.exports = RadixTrie;
+export default RadixTrie;
