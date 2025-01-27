@@ -1,6 +1,6 @@
 {
   "name": "us-places-geocoder",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Static geocoder that returns coordinates (lat/long) for places in the United States",
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
