@@ -3,7 +3,7 @@ import RadixTrie from "./radixTrie";
 
 const places = placesJSON as [string, Coordinates][];
 
-const DEFAULT_MAX_NUM_RESULTS = 12;
+const DEFAULT_MAX_NUM_RESULTS = 10;
 
 function placeNameToGeolevel(placeName: string): Geolevel {
   return /(County|Municipio), [A-Z]{2}$/.test(placeName)
@@ -48,7 +48,7 @@ export function searchByPlaceName(
   placeName: string,
   options: Partial<SearchOptions> = {}
 ) {
-  const opts = { ...defaultOptions, options };
+  const opts = { ...defaultOptions, ...options };
   return (placesTrie.search(placeName) ?? [])
     .map((id: number) => {
       const [name, coordinates] = places[id];

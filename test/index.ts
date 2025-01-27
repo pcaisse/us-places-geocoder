@@ -1,7 +1,7 @@
-const assert = require("node:assert/strict");
-const { describe, it } = require("node:test");
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 
-const { searchByPlaceName } = require("../lib/index.js");
+import { searchByPlaceName } from "../lib/index.js";
 
 describe("Geocoder", () => {
   it("returns all matching results", () => {
@@ -25,6 +25,16 @@ describe("Geocoder", () => {
     const results = searchByPlaceName("Philadelphia");
     // console.debug("results", results);
     assert.equal(results[0].name, "Philadelphia, PA");
+  });
+  it("number of results respects custom option", () => {
+    const results = searchByPlaceName("Philadelphia", { maxNumResults: 2 });
+    assert.equal(results.length, 2);
+  });
+  it("respects custom sort option", () => {
+    const results = searchByPlaceName("a", {
+      sortFunc: (a, b) => a.name.length - b.name.length,
+    });
+    assert.equal(results[0].name, "Ai, OH");
   });
   it("returns no results for string that does not match", () => {
     const results = searchByPlaceName("s;ldkfj");
