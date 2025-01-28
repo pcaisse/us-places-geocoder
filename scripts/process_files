@@ -61,5 +61,5 @@ done
 
 # Now that all features have been converted to tuples of [<place_name>, [<lat>, <lng>],
 # <population>] combine all JSON files into one, cast coordinates to numbers, sort by population
-# (descending), and remove population data
-jq -c -s 'add | [.[] | .[1].[] |= tonumber] | sort_by(.[2]) | reverse | map(del(.[2]))' $temp_dir/*.json > $output_dir/places.json
+# (descending), remove population data, and flatten to save space
+jq -c -s 'add | [.[] | .[1].[] |= tonumber] | sort_by(.[2]) | reverse | map(del(.[2]) | flatten) | flatten' $temp_dir/*.json > $output_dir/places.json

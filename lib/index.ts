@@ -1,7 +1,30 @@
 import placesJSON from "../static/places.json";
 import RadixTrie from "./radixTrie";
 
-const places = placesJSON as [string, Coordinates][];
+function parsePlacesJSON(
+  placesJSON: (string | number)[]
+): [string, Coordinates][] {
+  let ret = [];
+  for (let i = 0; i < placesJSON.length; i += 3) {
+    const name = placesJSON[i];
+    if (typeof name !== "string") {
+      throw new Error(`Invalid name: ${name}`);
+    }
+    const lat = placesJSON[i + 1];
+    if (typeof lat !== "number") {
+      throw new Error(`Invalid lat: ${lat}`);
+    }
+    const lng = placesJSON[i + 2];
+    if (typeof lng !== "number") {
+      throw new Error(`Invalid lng: ${lng}`);
+    }
+    const place: [string, Coordinates] = [name, [lat, lng]];
+    ret.push(place);
+  }
+  return ret;
+}
+
+const places = parsePlacesJSON(placesJSON);
 
 const DEFAULT_MAX_NUM_RESULTS = 10;
 
