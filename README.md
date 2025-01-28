@@ -4,7 +4,7 @@ Static geocoder that returns coordinates (lat/long) for places in the United Sta
 
 ## Usage
 
-This package exposes only one function called `searchByPlaceName` which takes a case-insensitive
+This package exposes a function called `searchByPlaceName` which takes a case-insensitive
 place name (or place name prefix) and returns a list of matching place names and their coordinates
 sorted by population by default.
 
@@ -56,7 +56,6 @@ For example, here are the search results for "phila":
     geolevel: 'city'
   }
 ]
-
 ```
 
 ## About
@@ -89,10 +88,13 @@ API key.
 
 But sometimes you don't want to rely on another another service that you need to integrate with and
 then maintain that integration; a service which may, at some point in the future, cease to exist.
-You may also want offline support. Plus, place names don't change very often and a megabyte isn't as
-big as it used to be.
+You may also want offline support. Plus, place names don't change very often, populations are fairly
+stable, and a megabyte isn't as big as it used to be.
 
 If you are only concerned with places in the U.S. and don't need lookup at the address level, this geocoder could work well for you (and is very, very fast compared to a network call!).
+
+One distinct downside to using a static geocoder is the JSON payload size (currently 1.36 MB) which
+will increase the size of your JavaScript bundle proportionately if you use this package.
 
 ## Development
 
