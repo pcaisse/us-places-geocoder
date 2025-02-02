@@ -2,6 +2,10 @@
 
 Static geocoder that returns coordinates (lat/long) for places in the United States.
 
+## Demo
+
+https://pcaisse.github.io/us-places-geocoder-demo/
+
 ## Usage
 
 This package exposes a function called `searchByPlaceName` which takes a case-insensitive
