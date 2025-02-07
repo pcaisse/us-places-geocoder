@@ -1,6 +1,6 @@
 {
   "name": "us-places-geocoder",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Static geocoder that returns coordinates (lat/long) for places in the United States",
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
@@ -20,6 +20,17 @@
   "repository": {
     "url": "https://github.com/pcaisse/us-places-geocoder"
   },
+  "keywords": [
+    "geo",
+    "geocoder",
+    "geocoding",
+    "maps",
+    "geospatial",
+    "gis",
+    "places",
+    "united states",
+    "usa"
+  ],
   "devDependencies": {
     "@types/node": "22.10.10",
     "tsx": "4.19.2",

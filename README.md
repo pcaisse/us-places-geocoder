@@ -1,10 +1,17 @@
 # U.S. Places Geocoder
 
+[![Test Status](https://github.com/pcaisse/us-places-geocoder/actions/workflows/main.yml/badge.svg)](https://github.com/pcaisse/us-places-geocoder/actions/workflows/main.yml)
+[![npm version](https://img.shields.io/npm/v/us-places-geocoder.svg?style=flat-square)](https://www.npmjs.com/package/us-places-geocoder)
+
 Static geocoder that returns coordinates (lat/long) for places in the United States.
 
-## Demo
+[Demo site](https://pcaisse.github.io/us-places-geocoder-demo/)
 
-https://pcaisse.github.io/us-places-geocoder-demo/
+## Installation
+
+```
+npm install us-places-geocoder
+```
 
 ## Usage
 
