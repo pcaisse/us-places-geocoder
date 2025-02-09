@@ -1,6 +1,12 @@
 import placesJSON from "../static/places.json";
 import RadixTrie from "./radixTrie";
 
+import {
+  AlphaFIPSCode,
+  alphaFIPSCodes,
+  alphaFIPSCodeToAreaName,
+} from "./constants";
+
 function parsePlacesJSON(
   placesJSON: (string | number)[]
 ): [string, Coordinates][] {
@@ -36,6 +42,15 @@ function placeNameToGeolevel(placeName: string): Geolevel {
     : "state";
 }
 
+function placeNameIsInArea(placeName: string, alphaFIPSCode: AlphaFIPSCode) {
+  return (
+    // eg. "Pennsylvania" matches PA
+    alphaFIPSCodeToAreaName[alphaFIPSCode] === placeName ||
+    // eg. "Philadelphia, PA" matches PA
+    placeName.endsWith(", " + alphaFIPSCode)
+  );
+}
+
 export type Coordinates = [number, number];
 export type Geolevel = "city" | "county" | "state";
 
@@ -60,11 +75,13 @@ places.forEach(([placeName, _coords]: [string, Coordinates], index: number) => {
 export interface SearchOptions {
   readonly maxNumResults: number;
   readonly sortFunc: SortFunc;
+  readonly excludedAreas: AlphaFIPSCode[];
 }
 
 const defaultOptions: SearchOptions = {
   maxNumResults: DEFAULT_MAX_NUM_RESULTS,
   sortFunc: sortByPopulationRank,
+  excludedAreas: [],
 };
 
 export function searchByPlaceName(
@@ -79,6 +96,12 @@ export function searchByPlaceName(
       // NOTE: ids are pre-sorted in the data by population!
       return { populationRank: id, name, coordinates, geolevel };
     })
+    .filter(({ name }) =>
+      opts.excludedAreas.every(
+        (excludedAreaAlphaFIPSCode) =>
+          !placeNameIsInArea(name, excludedAreaAlphaFIPSCode)
+      )
+    )
     .sort(opts.sortFunc)
     .filter((_: SearchResult, index: number) => index < opts.maxNumResults);
 }

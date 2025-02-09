@@ -36,6 +36,13 @@ describe("Geocoder", () => {
     });
     assert.equal(results[0].name, "Ai, OH");
   });
+  it("excluded places, counties, and states are filtered out of results", () => {
+    const results = searchByPlaceName("New York", {
+      excludedAreas: ["NY"],
+    });
+    assert.equal(results.length, 1);
+    assert.equal(results[0].name, "New York Mills, MN");
+  });
   it("returns no results for string that does not match", () => {
     const results = searchByPlaceName("s;ldkfj");
     assert.equal(results.length, 0);
